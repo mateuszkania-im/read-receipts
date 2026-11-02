@@ -3,11 +3,11 @@ import { bestOf, perfFloorMBps } from './floor.js';
 
 describe('perf floor (CI throughput check)', () => {
   it('is 10 MB/s on Node below 22 and 17 MB/s from Node 22 on', () => {
-    expect(perfFloorMBps('v20.19.0')).toBe(10);
-    expect(perfFloorMBps('v20.20.1')).toBe(10);
-    expect(perfFloorMBps('v21.7.3')).toBe(10);
-    expect(perfFloorMBps('v22.0.0')).toBe(17);
-    expect(perfFloorMBps('v24.1.0')).toBe(17);
+    expect(perfFloorMBps('v20.19.0', 'linux')).toBe(10);
+    expect(perfFloorMBps('v20.20.1', 'linux')).toBe(10);
+    expect(perfFloorMBps('v21.7.3', 'linux')).toBe(10);
+    expect(perfFloorMBps('v22.0.0', 'linux')).toBe(17);
+    expect(perfFloorMBps('v24.1.0', 'linux')).toBe(17);
   });
   it('is 10 MB/s on Windows runners, whatever the Node version', () => {
     expect(perfFloorMBps('v22.23.4', 'win32')).toBe(10);
