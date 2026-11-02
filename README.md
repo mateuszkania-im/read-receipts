@@ -110,6 +110,10 @@ npm run check:bundle     # fails if the committed bundle is out of date
 npm run perf             # 1 GB throughput check, local only
 ```
 
+Throughput: on an Apple M2 Pro with 16 GB of RAM and Node 22.14, `npm run perf` parsed the generated 1 GB corpus (337 sessions) in 27.7 s, 36.9 MB/s at best of 3 runs, with a peak RSS of 171 MB. CI parses a 64 MB corpus three times and checks the best run against a floor of 17 MB/s on Node 22 and 10 MB/s on Node 20, because shared runners are slower and noisier.
+
+To check the win32 path rules on another OS, run a suite with `RR_TEST_PLATFORM=win32 npx vitest run <file>` (it changes `process.platform` only, so suites that touch real files or spawn processes still need Windows).
+
 The validation study scripts are in [`study/`](study/). They only read sessions from the repos in `study/allowlist.json`, and their working files go to `study/.work/`, which is never committed. [docs/STUDY.md](docs/STUDY.md) describes how to rerun them.
 
 ## License

@@ -2,9 +2,10 @@ import { describe, expect, it, vi } from 'vitest';
 import { attribute, type AttributeDeps } from '../../src/attribution/attribute.js';
 import type { Pr } from '../../src/attribution/gh.js';
 import { fakeSession } from '../helpers/fake-session.js';
+import { abs, norm } from '../helpers/platform-path.js';
 
 const now = new Date('2026-11-02T00:00:00Z');
-const git: AttributeDeps['git'] = async () => ({ root: '/r', commonRoot: '/r', origin: 'git@github.com:acme/shop.git', defaultBranch: 'main' });
+const git: AttributeDeps['git'] = async () => ({ root: norm('/r'), commonRoot: norm('/r'), origin: 'git@github.com:acme/shop.git', defaultBranch: 'main' });
 const pr = (o: Partial<Pr> & { number: number; headRefName: string }): Pr => ({
   state: 'OPEN',
   createdAt: '2026-10-02T12:00:00Z',
@@ -14,7 +15,7 @@ const pr = (o: Partial<Pr> & { number: number; headRefName: string }): Pr => ({
   url: `https://github.com/acme/shop/pull/${o.number}`,
   ...o,
 });
-const span = (ts: string, branch: string | null, usd: number, subagent = false) => ({ ts, cwd: '/r', branch, usd, requests: 1, subagent });
+const span = (ts: string, branch: string | null, usd: number, subagent = false) => ({ ts, cwd: abs('/r'), branch, usd, requests: 1, subagent });
 const sessOn = (id: string, branch: string, ts: string, extra: { edits?: number; usd?: number; explicitPrs?: number[] } = {}) =>
   fakeSession({ sessionId: id, branchSpans: [span(ts, branch, extra.usd ?? 1)], edits: extra.edits ?? 1, explicitPrs: (extra.explicitPrs ?? []).map((number) => ({ number, repo: null })) });
 
@@ -82,7 +83,7 @@ describe('attribute', () => {
   });
   it('without a repo the session cwd names the bucket, outside unmerged spend', async () => {
     const r = await attribute([sessOn('s1', 'feat/x', '2026-10-03T10:00:00Z')], { gh: true, now }, { git: async () => null, exists: async () => true });
-    expect(r.branches[0]).toMatchObject({ repo: '/r', branch: 'feat/x', outcome: 'noRepo' });
+    expect(r.branches[0]).toMatchObject({ repo: norm('/r'), branch: 'feat/x', outcome: 'noRepo' });
     expect(r.unmergedSpend).toBe(0);
   });
   it('maps each session to the PRs it touched', async () => {
@@ -98,16 +99,16 @@ describe('attribute: review round 7-8', () => {
     note: null,
   });
   const repos: Record<string, { root: string; commonRoot: string; origin: string; defaultBranch: string }> = {
-    '/w/repo': { root: '/w/repo', commonRoot: '/w/repo', origin: 'https://github.com/acme/widget.git', defaultBranch: 'main' },
-    '/w/other': { root: '/w/other', commonRoot: '/w/other', origin: 'https://github.com/acme/other.git', defaultBranch: 'main' },
+    [abs('/w/repo')]: { root: norm('/w/repo'), commonRoot: norm('/w/repo'), origin: 'https://github.com/acme/widget.git', defaultBranch: 'main' },
+    [abs('/w/other')]: { root: norm('/w/other'), commonRoot: norm('/w/other'), origin: 'https://github.com/acme/other.git', defaultBranch: 'main' },
   };
   const deps = (gone: string[] = []) => ({
     git: async (d: string) => repos[d] ?? null,
-    exists: async (d: string) => !gone.includes(d),
+    exists: async (d: string) => !gone.map(abs).includes(d),
     listPrs,
   });
   const sess = (id: string, spans: Array<[string, string | null, number]>, links: Array<{ number: number; repo: string | null }> = []) =>
-    fakeSession({ sessionId: id, cwd: spans[0]![0], branchSpans: spans.map(([cwd, branch, usd], i) => ({ ts: `2026-10-30T1${i}:00:00Z`, cwd, branch, usd, requests: 1, subagent: false })), explicitPrs: links });
+    fakeSession({ sessionId: id, cwd: abs(spans[0]![0]), branchSpans: spans.map(([cwd, branch, usd], i) => ({ ts: `2026-10-30T1${i}:00:00Z`, cwd: abs(cwd), branch, usd, requests: 1, subagent: false })), explicitPrs: links });
 
   it('ruling 1: a session outside a repo goes to "no repo", never unmerged; an empty branch is no branch', async () => {
     const r = await attribute([sess('b', [['/w/notarepo', '', 1]])], { gh: true, now }, deps());
@@ -121,7 +122,7 @@ describe('attribute: review round 7-8', () => {
   });
   it('ruling 2: a removed worktree resolves its merged PR by branch name through the main repo', async () => {
     const r = await attribute([sess('a', [['/w/wt', 'feat/wt', 1]]), sess('d', [['/w/repo', 'feat/wt', 1]])], { gh: true, now }, deps(['/w/wt']));
-    expect(r.prs).toEqual([expect.objectContaining({ repo: '/w/repo', number: 12, state: 'merged', usd: 2, sessionIds: ['a', 'd'] })]);
+    expect(r.prs).toEqual([expect.objectContaining({ repo: norm('/w/repo'), number: 12, state: 'merged', usd: 2, sessionIds: ['a', 'd'] })]);
     expect(r.unmergedSpend).toBe(0);
   });
   it('ruling 2: an unresolvable removed worktree is "unattributed (worktree gone)", never unmerged, with a warning', async () => {
@@ -132,12 +133,12 @@ describe('attribute: review round 7-8', () => {
   });
   it('ruling 3: an explicit PR link applies only to spans in the repo it names', async () => {
     const r = await attribute([sess('d', [['/w/repo', 'feat/wt', 1], ['/w/other', 'feat/o', 1]], [{ number: 12, repo: 'acme/widget' }])], { gh: true, now }, deps());
-    expect(r.prs.map((p) => [p.repo, p.number])).toEqual([['/w/repo', 12]]);
+    expect(r.prs.map((p) => [p.repo, p.number])).toEqual([[norm('/w/repo'), 12]]);
     expect(r.branches.find((b) => b.branch === 'feat/o')).toMatchObject({ outcome: 'noPr' });
   });
   it('ruling 3: a bare PR number applies only to the session\'s first repo', async () => {
     const r = await attribute([sess('d', [['/w/repo', 'feat/wt', 1], ['/w/other', 'feat/o', 1]], [{ number: 12, repo: null }])], { gh: false, now }, deps());
-    expect(r.prs.map((p) => [p.repo, p.number])).toEqual([['/w/repo', 12]]);
+    expect(r.prs.map((p) => [p.repo, p.number])).toEqual([[norm('/w/repo'), 12]]);
   });
   it('ruling 4: spend on branches without a known PR is reported separately', async () => {
     const r = await attribute([sess('e', [['/w/repo', 'feat/x', 5]])], { gh: false, now }, deps());

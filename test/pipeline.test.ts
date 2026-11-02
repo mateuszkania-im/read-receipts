@@ -2,6 +2,7 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { buildReport, projectFolderMatches } from '../src/pipeline.js';
 import { fixtureTree } from './helpers/fixture-tree.js';
+import { abs } from './helpers/platform-path.js';
 import { defaults } from './helpers/report-defaults.js';
 import { claudeLines, tmpDir, writeClaudeSession } from './helpers/synth.js';
 
@@ -23,11 +24,13 @@ describe('buildReport', () => {
   });
   it('--project keeps only sessions whose cwd is inside the path, and never opens other project folders', async () => {
     const claudeDir = await tmpDir();
-    const a = '/work/public-repo';
-    const b = '/work/private-repo';
+    const a = abs('/work/public-repo');
+    const b = abs('/work/private-repo');
+    const sub = abs('/work/public-repo/sub');
+    const other = abs('/work/public-repo-other');
     await writeClaudeSession(claudeDir, a, 'aaaaaaaa-0000-4000-8000-00000000000a', claudeLines('aaaaaaaa-0000-4000-8000-00000000000a', [{ ts: '2026-10-02T10:00:00.000Z', cwd: a }]));
-    await writeClaudeSession(claudeDir, `${a}/sub`, 'aaaaaaaa-0000-4000-8000-00000000000c', claudeLines('aaaaaaaa-0000-4000-8000-00000000000c', [{ ts: '2026-10-02T10:00:00.000Z', cwd: `${a}/sub` }]));
-    await writeClaudeSession(claudeDir, `${a}-other`, 'aaaaaaaa-0000-4000-8000-00000000000d', claudeLines('aaaaaaaa-0000-4000-8000-00000000000d', [{ ts: '2026-10-02T10:00:00.000Z', cwd: `${a}-other` }]));
+    await writeClaudeSession(claudeDir, sub, 'aaaaaaaa-0000-4000-8000-00000000000c', claudeLines('aaaaaaaa-0000-4000-8000-00000000000c', [{ ts: '2026-10-02T10:00:00.000Z', cwd: sub }]));
+    await writeClaudeSession(claudeDir, other, 'aaaaaaaa-0000-4000-8000-00000000000d', claudeLines('aaaaaaaa-0000-4000-8000-00000000000d', [{ ts: '2026-10-02T10:00:00.000Z', cwd: other }]));
     // A private folder whose file is not even valid: opening it would show up as a bad line.
     const priv = await writeClaudeSession(claudeDir, b, 'aaaaaaaa-0000-4000-8000-00000000000b', '{"not json');
     const r = await buildReport({ ...defaults, claudeDir, projects: [a] });

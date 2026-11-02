@@ -56,7 +56,10 @@ async function corpus(): Promise<string> {
   return claudeDir;
 }
 
-describe('sample-reads', () => {
+// POSIX-only: the study sampler runs on the maintainer's POSIX logs, and its fail-closed path and shell
+// filters (callTouchesOutside, scrubText) know POSIX paths only. On win32 these POSIX cwds are not local
+// absolute paths (security review F4), so every session is refused before sampling.
+describe.skipIf(process.platform === 'win32')('sample-reads (POSIX-only study sampler)', () => {
   it('refuses every session whose cwd is not inside an allowlisted repo', async () => {
     const claudeDir = await corpus();
     const c = await collectCorpus({ claudeDir, codexDir: null, allowlist: allow, home: HOME, deny: [] });

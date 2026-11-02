@@ -8,6 +8,7 @@ import type { InjectionEvent, LedgerEvent } from '../../src/model.js';
 import { parseClaudeThread, prNumberOf, prRepoOf, stableSystemPromptHash } from '../../src/parse/claude.js';
 import { parseCodexThread } from '../../src/parse/codex.js';
 import { hash16 } from '../../src/parse/common.js';
+import { abs, norm } from '../helpers/platform-path.js';
 
 async function tmp(lines: object[]): Promise<string> {
   const dir = await mkdtemp(path.join(os.tmpdir(), 'rr-harness-'));
@@ -17,7 +18,7 @@ async function tmp(lines: object[]): Promise<string> {
 }
 
 async function claude(lines: object[]): Promise<InjectionEvent[]> {
-  const f = await tmp(lines.map((l) => ({ cwd: '/home/dev/app', sessionId: 's', version: '2.1.316', timestamp: '2026-11-01T10:00:00.000Z', ...l })));
+  const f = await tmp(lines.map((l) => ({ cwd: abs('/home/dev/app'), sessionId: 's', version: '2.1.316', timestamp: '2026-11-01T10:00:00.000Z', ...l })));
   const out: LedgerEvent[] = [];
   for await (const e of parseClaudeThread(f, { threadId: 'main', parentThreadId: null, spawnedByCallId: null, maxLineBytes: 1 << 20 }, newStats()).events) out.push(e);
   return out.filter((e): e is InjectionEvent => e.kind === 'injection');
@@ -27,10 +28,11 @@ const att = (attachment: object) => ({ type: 'attachment', attachment });
 
 describe('Claude injections carry fingerprint fields', () => {
   it('instructions carry their scope', async () => {
-    const ev = await claude([att({ type: 'instructions', files: [{ path: '/home/dev/app/CLAUDE.md', type: 'Project', content: 'v1' }, { path: '/home/u/.claude/CLAUDE.md', type: 'User', content: 'u' }] })]);
+    const ev = await claude([att({ type: 'instructions', files: [{ path: abs('/home/dev/app/CLAUDE.md'), type: 'Project', content: 'v1' }, { path: abs('/home/u/.claude/CLAUDE.md'), type: 'User', content: 'u' }] })]);
+    // Names are normalised paths (lowercased on win32, where matching is case-insensitive).
     expect(ev.map((e) => [e.name, e.scope])).toEqual([
-      ['/home/dev/app/CLAUDE.md', 'Project'],
-      ['/home/u/.claude/CLAUDE.md', 'User'],
+      [norm('/home/dev/app/CLAUDE.md'), 'Project'],
+      [norm('/home/u/.claude/CLAUDE.md'), 'User'],
     ]);
   });
   it('skill listings carry digests, or names when digests are missing', async () => {

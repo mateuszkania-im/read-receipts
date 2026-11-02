@@ -5,6 +5,7 @@ import { renderJson } from '../../src/report/json.js';
 import { hmacLabel, shareReport } from '../../src/report/share.js';
 import type { Report } from '../../src/report/types.js';
 import { CANARY, CANARY_FILE_ID, CANARY_HOME, canaryDeps, canaryTree } from '../helpers/canary.js';
+import { isWin } from '../helpers/platform-path.js';
 import { defaults } from '../helpers/report-defaults.js';
 
 let canaryReport: Report;
@@ -21,8 +22,10 @@ beforeAll(async () => {
 
 describe('shareReport', () => {
   it('the canary corpus reaches the unredacted report (the test can fail)', () => {
-    const raw = JSON.stringify(canaryReport);
-    for (const m of [CANARY_FILE_ID, 'feat/CANARY-BRANCH-7', '/home/canary-user/acme-repo', 'CANARY_PRTITLE_9f3', '/etc/CANARY_ABS', 'CANARY_AGENTTYPE_9f3', 'CANARY_ENTRYPOINT_9f3', 'mcp:CANARY-MCP-9f3', 'tool_result:CANARY_TOOL_9f3', 'mcp:CANARY-CODEXMCP-9f3']) {
+    // win32 lowercases paths, so the path markers are looked for in any case there.
+    const raw = isWin() ? JSON.stringify(canaryReport).toLowerCase() : JSON.stringify(canaryReport);
+    for (const m0 of [CANARY_FILE_ID, 'feat/CANARY-BRANCH-7', '/home/canary-user/acme-repo', 'CANARY_PRTITLE_9f3', '/etc/CANARY_ABS', 'CANARY_AGENTTYPE_9f3', 'CANARY_ENTRYPOINT_9f3', 'mcp:CANARY-MCP-9f3', 'tool_result:CANARY_TOOL_9f3', 'mcp:CANARY-CODEXMCP-9f3']) {
+      const m = isWin() ? m0.toLowerCase() : m0;
       expect(raw).toContain(m);
     }
     expect(canaryReport.prs[0]?.state).toBe('merged');
