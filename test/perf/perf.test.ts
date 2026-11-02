@@ -1,7 +1,7 @@
 // Throughput of the streaming pipeline on a generated corpus (spec section 10). The default run uses
 // 64 MB (CI); `npm run perf` sets PERF_MB=1024 and also checks the 60 s budget. The corpus is written
 // to the temp directory, never the repository, and removed afterwards. The corpus is parsed RUNS times
-// and the best run is checked against the floor (10 MB/s on Node < 22, 17 MB/s from Node 22), so one
+// and the best run is checked against the floor (10 MB/s on Node < 22 and on Windows, else 17 MB/s), so one
 // slow moment on a shared CI runner does not fail the build.
 
 import { rm } from 'node:fs/promises';

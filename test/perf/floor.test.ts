@@ -9,6 +9,10 @@ describe('perf floor (CI throughput check)', () => {
     expect(perfFloorMBps('v22.0.0')).toBe(17);
     expect(perfFloorMBps('v24.1.0')).toBe(17);
   });
+  it('is 10 MB/s on Windows runners, whatever the Node version', () => {
+    expect(perfFloorMBps('v22.23.4', 'win32')).toBe(10);
+    expect(perfFloorMBps('v22.23.4', 'linux')).toBe(17);
+  });
   it('runs the measurement the given number of times and keeps the best', async () => {
     const seen = [5, 12, 9];
     let i = 0;
