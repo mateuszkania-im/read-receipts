@@ -1,0 +1,56 @@
+name: ci
+on:
+  push: { branches: [main] }
+  pull_request:
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        # 20.19 is the oldest version engines allows; 20 is the latest Node 20.
+        node: ['20.19', 20, 22]
+        include:
+          - { os: windows-latest, node: 22 }
+    steps:
+      # Windows runners convert to CRLF on checkout; .gitattributes pins LF too, this covers git itself.
+      - run: git config --global core.autocrlf false
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ matrix.node }}', cache: npm }
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - name: standalone bundle is committed and up to date
+        run: npm run check:bundle
+      - name: README and STUDY study blocks match study/results.json
+        run: node study/score.mjs --check
+      - name: smoke (bundle has no runtime dependencies)
+        shell: bash
+        run: |
+          smoke="$RUNNER_TEMP/smoke"
+          mkdir -p "$smoke" && cp bin/read-receipts.mjs "$smoke/"
+          node "$smoke/read-receipts.mjs" --version
+          node "$smoke/read-receipts.mjs" --help
+          node "$smoke/read-receipts.mjs" --claude-dir "$smoke/none" --codex-dir "$smoke/none"
+
+  pack:
+    # The release artifact itself: npm pack, then run the tarball the way the README does.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - name: npm pack and npx the tarball
+        shell: bash
+        run: |
+          npm pack
+          tgz="$PWD/read-receipts-$(node -p 'require("./package.json").version').tgz"
+          test -f "$tgz"
+          cd "$RUNNER_TEMP"
+          npx -y "file:$tgz" --help
+          npx -y "file:$tgz" --version

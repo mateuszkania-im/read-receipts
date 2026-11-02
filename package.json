@@ -1,0 +1,65 @@
+{
+  "name": "read-receipts",
+  "version": "0.1.0",
+  "description": "Read receipts for your coding agent: what it read, what it never referred to again, and what each session, branch and PR cost. Local CLI over Claude Code and Codex logs.",
+  "keywords": [
+    "claude-code",
+    "codex",
+    "coding-agent",
+    "ai-agents",
+    "context",
+    "context-window",
+    "tokens",
+    "cost",
+    "prompt-caching",
+    "session-logs",
+    "observability",
+    "cli",
+    "llm"
+  ],
+  "homepage": "https://github.com/mateuszkania-im/read-receipts#readme",
+  "bugs": {
+    "url": "https://github.com/mateuszkania-im/read-receipts/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mateuszkania-im/read-receipts.git"
+  },
+  "license": "MIT",
+  "author": "Mateusz Kania",
+  "type": "module",
+  "bin": {
+    "read-receipts": "bin/read-receipts.mjs"
+  },
+  "files": [
+    "bin",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "tsx src/cli.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint --deny-warnings src test scripts study",
+    "check:bundle": "node scripts/build.mjs --check",
+    "prepack": "npm run typecheck && npm run lint && npm test && npm run build",
+    "perf": "node scripts/perf.mjs",
+    "perf:clean": "node scripts/clean-perf-corpus.mjs",
+    "sample": "node --import tsx scripts/sample-report.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "commander": "^14.0.3",
+    "esbuild": "^0.27.7",
+    "oxlint": "^1.90.0",
+    "picocolors": "^1.1.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
+}

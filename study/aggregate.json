@@ -1,0 +1,42 @@
+{
+  "runAt": "2026-11-02T02:41:56.815Z",
+  "toolVersion": "0.1.0",
+  "sessions": 351,
+  "requests": 925,
+  "usd": 43.41890539999999,
+  "usdLowerBound": false,
+  "harnessUSD": 44.182774900000005,
+  "unloggedUSD": 0.7638695000000006,
+  "sessionsWithHarnessCost": 351,
+  "cacheHitShare": 0.7373768596163115,
+  "reads": 268,
+  "unreferencedReads": 72,
+  "unreferencedReadRate": 0.26865671641791045,
+  "unreferencedTokenShare": 0.282147659027757,
+  "unreferencedCarriedUSD": 0.48327460000000005,
+  "rereads": 15,
+  "rereadsUnchanged": 14,
+  "rereadRate": 0.055970149253731345,
+  "compactions": 0,
+  "compactionRereadRate": null,
+  "subagents": 0,
+  "subagentCostShare": 0,
+  "compositionShares": {
+    "user_prompt": 0.344921171199628,
+    "tool_schemas": 0.35054383533258704,
+    "system_prompt": 0.1142531163846148,
+    "tool_result:Read": 0.052807968038895106,
+    "other": 0.02527869310213251,
+    "assistant_output": 0.08725103037164134,
+    "tool_result:Grep": 0.019285196257053404,
+    "tool_result:Bash": 0.0042359898516921846,
+    "instructions": 0.0003961024028948958,
+    "tool_result:Edit": 0.0004891264520596061,
+    "tool_result:Glob": 0.00006996545633271086,
+    "tool_result:tool-d321ee": 0.0004678051504683737
+  },
+  "entrypoints": {
+    "sdk-py": 271,
+    "sdk-cli": 80
+  }
+}

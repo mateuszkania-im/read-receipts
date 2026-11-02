@@ -1,0 +1,5 @@
+{
+  "note": "Validation study corpus (spec section 11.1): only sessions whose cwd is inside one of these public repos, found at <home>/<parent>/<repo>. Every other session is refused by study/sample-reads.mjs.",
+  "parents": ["Desktop", "Desktop/open-source"],
+  "repos": ["why-diff", "doc-router", "recipe-units-agent", "agent-ledger"]
+}

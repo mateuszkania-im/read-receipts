@@ -1,0 +1,12 @@
+node_modules
+dist
+*.log
+.vitest/
+# Local study work: session excerpts for the labeller. Never commit.
+study/.work/
+# Generated perf corpus.
+test/.perf/
+# Reports generated while developing.
+*.report.html
+# npm pack output.
+*.tgz

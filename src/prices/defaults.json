@@ -1,0 +1,517 @@
+{
+  "about": [
+    "USD per million tokens, standard (global) tier, copied from the vendor pages on the retrieved date. Never filled from memory.",
+    "cacheWrite5m and cacheWrite1h: Anthropic 5-minute and 1-hour cache writes; OpenAI 30-minute and 12-hour cache writes.",
+    "longContext: prices for a request whose whole prompt (input + cache reads + cache writes) is over aboveInputTokens.",
+    "Cache reads are not always 0.1x input: on 2026-11-02 the pricing page gives 0.025x for claude-fable-5-1 ($0.25) and 0.05x for claude-opus-5-5 and claude-sonnet-5-5; checked against https://platform.claude.com/docs/en/about-claude/pricing (final review C17).",
+    "Priced: fast mode (the `fast` prices) and US-only inference (inference_geo us, the `usGeoMultiplier`). Not priced: batch, other regional endpoints and cloud-platform rates; requests with those modifiers are reported as unpriced."
+  ],
+  "models": {
+    "claude-fable-5-1": {
+      "input": 10,
+      "output": 50,
+      "cacheRead": 0.25,
+      "cacheWrite5m": 12.5,
+      "cacheWrite1h": 20,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02",
+      "usGeoMultiplier": 1.1
+    },
+    "claude-fable-5": {
+      "input": 10,
+      "output": 50,
+      "cacheRead": 1,
+      "cacheWrite5m": 12.5,
+      "cacheWrite1h": 20,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02",
+      "usGeoMultiplier": 1.1
+    },
+    "claude-opus-5-5": {
+      "input": 4,
+      "output": 20,
+      "cacheRead": 0.2,
+      "cacheWrite5m": 5,
+      "cacheWrite1h": 8,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02",
+      "fast": {
+        "input": 8,
+        "output": 40
+      },
+      "usGeoMultiplier": 1.1
+    },
+    "claude-opus-5": {
+      "input": 5,
+      "output": 25,
+      "cacheRead": 0.5,
+      "cacheWrite5m": 6.25,
+      "cacheWrite1h": 10,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02",
+      "fast": {
+        "input": 10,
+        "output": 50
+      },
+      "usGeoMultiplier": 1.1
+    },
+    "claude-opus-4-8": {
+      "input": 5,
+      "output": 25,
+      "cacheRead": 0.5,
+      "cacheWrite5m": 6.25,
+      "cacheWrite1h": 10,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02",
+      "fast": {
+        "input": 10,
+        "output": 50
+      },
+      "usGeoMultiplier": 1.1
+    },
+    "claude-opus-4-7": {
+      "input": 5,
+      "output": 25,
+      "cacheRead": 0.5,
+      "cacheWrite5m": 6.25,
+      "cacheWrite1h": 10,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02",
+      "usGeoMultiplier": 1.1
+    },
+    "claude-opus-4-6": {
+      "input": 5,
+      "output": 25,
+      "cacheRead": 0.5,
+      "cacheWrite5m": 6.25,
+      "cacheWrite1h": 10,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02",
+      "usGeoMultiplier": 1.1
+    },
+    "claude-opus-4-5": {
+      "input": 5,
+      "output": 25,
+      "cacheRead": 0.5,
+      "cacheWrite5m": 6.25,
+      "cacheWrite1h": 10,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02"
+    },
+    "claude-opus-4-1": {
+      "input": 15,
+      "output": 75,
+      "cacheRead": 1.5,
+      "cacheWrite5m": 18.75,
+      "cacheWrite1h": 30,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02"
+    },
+    "claude-opus-4": {
+      "input": 15,
+      "output": 75,
+      "cacheRead": 1.5,
+      "cacheWrite5m": 18.75,
+      "cacheWrite1h": 30,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02"
+    },
+    "claude-sonnet-5-5": {
+      "input": 2,
+      "output": 10,
+      "cacheRead": 0.1,
+      "cacheWrite5m": 2.5,
+      "cacheWrite1h": 4,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02",
+      "usGeoMultiplier": 1.1
+    },
+    "claude-sonnet-5": {
+      "input": 2,
+      "output": 10,
+      "cacheRead": 0.2,
+      "cacheWrite5m": 2.5,
+      "cacheWrite1h": 4,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02",
+      "usGeoMultiplier": 1.1
+    },
+    "claude-sonnet-4-6": {
+      "input": 3,
+      "output": 15,
+      "cacheRead": 0.3,
+      "cacheWrite5m": 3.75,
+      "cacheWrite1h": 6,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02",
+      "usGeoMultiplier": 1.1
+    },
+    "claude-sonnet-4-5": {
+      "input": 3,
+      "output": 15,
+      "cacheRead": 0.3,
+      "cacheWrite5m": 3.75,
+      "cacheWrite1h": 6,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02"
+    },
+    "claude-sonnet-4": {
+      "input": 3,
+      "output": 15,
+      "cacheRead": 0.3,
+      "cacheWrite5m": 3.75,
+      "cacheWrite1h": 6,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02"
+    },
+    "claude-haiku-5-5": {
+      "input": 0.1,
+      "output": 0.5,
+      "cacheRead": 0.01,
+      "cacheWrite5m": 0.125,
+      "cacheWrite1h": 0.2,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02",
+      "longContext": {
+        "aboveInputTokens": 100000,
+        "input": 0.5,
+        "output": 2.5,
+        "cacheRead": 0.05,
+        "cacheWrite5m": 0.625,
+        "cacheWrite1h": 1
+      },
+      "usGeoMultiplier": 1.1
+    },
+    "claude-haiku-4-5": {
+      "input": 1,
+      "output": 5,
+      "cacheRead": 0.1,
+      "cacheWrite5m": 1.25,
+      "cacheWrite1h": 2,
+      "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "retrieved": "2026-11-02"
+    },
+    "gpt-6-astra": {
+      "input": 10,
+      "output": 50,
+      "cacheRead": 1,
+      "cacheWrite5m": 12.5,
+      "cacheWrite1h": 25,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "longContext": {
+        "aboveInputTokens": 272000,
+        "input": 20,
+        "output": 75,
+        "cacheRead": 2,
+        "cacheWrite5m": 25,
+        "cacheWrite1h": 50
+      }
+    },
+    "gpt-6.1-sol": {
+      "input": 2,
+      "output": 10,
+      "cacheRead": 0.1,
+      "cacheWrite5m": 2.5,
+      "cacheWrite1h": 5,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "longContext": {
+        "aboveInputTokens": 272000,
+        "input": 4,
+        "output": 15,
+        "cacheRead": 0.2,
+        "cacheWrite5m": 5,
+        "cacheWrite1h": 10
+      }
+    },
+    "gpt-6.1-terra": {
+      "input": 1,
+      "output": 5,
+      "cacheRead": 0.05,
+      "cacheWrite5m": 1.25,
+      "cacheWrite1h": 2.5,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "longContext": {
+        "aboveInputTokens": 272000,
+        "input": 2,
+        "output": 7.5,
+        "cacheRead": 0.1,
+        "cacheWrite5m": 2.5,
+        "cacheWrite1h": 5
+      }
+    },
+    "gpt-6-luna": {
+      "input": 0.1,
+      "output": 0.5,
+      "cacheRead": 0.01,
+      "cacheWrite5m": 0.125,
+      "cacheWrite1h": 0.25,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "longContext": {
+        "aboveInputTokens": 272000,
+        "input": 0.2,
+        "output": 0.75,
+        "cacheRead": 0.02,
+        "cacheWrite5m": 0.25,
+        "cacheWrite1h": 0.5
+      }
+    },
+    "gpt-6-sol": {
+      "input": 2,
+      "output": 10,
+      "cacheRead": 0.2,
+      "cacheWrite5m": 2.5,
+      "cacheWrite1h": 5,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "longContext": {
+        "aboveInputTokens": 272000,
+        "input": 4,
+        "output": 15,
+        "cacheRead": 0.4,
+        "cacheWrite5m": 5,
+        "cacheWrite1h": 10
+      }
+    },
+    "gpt-5.6-sol": {
+      "input": 4,
+      "output": 20,
+      "cacheRead": 0.4,
+      "cacheWrite5m": 5,
+      "cacheWrite1h": 10,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "longContext": {
+        "aboveInputTokens": 272000,
+        "input": 8,
+        "output": 30,
+        "cacheRead": 0.8,
+        "cacheWrite5m": 10,
+        "cacheWrite1h": 20
+      }
+    },
+    "gpt-5.6-terra": {
+      "input": 2,
+      "output": 12,
+      "cacheRead": 0.2,
+      "cacheWrite5m": 2.5,
+      "cacheWrite1h": 5,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "longContext": {
+        "aboveInputTokens": 272000,
+        "input": 4,
+        "output": 18,
+        "cacheRead": 0.4,
+        "cacheWrite5m": 5,
+        "cacheWrite1h": 10
+      }
+    },
+    "gpt-5.6-luna": {
+      "input": 0.2,
+      "output": 1.2,
+      "cacheRead": 0.02,
+      "cacheWrite5m": 0.25,
+      "cacheWrite1h": 0.5,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "longContext": {
+        "aboveInputTokens": 272000,
+        "input": 0.4,
+        "output": 1.8,
+        "cacheRead": 0.04,
+        "cacheWrite5m": 0.5,
+        "cacheWrite1h": 1
+      }
+    },
+    "gpt-5.5": {
+      "input": 5,
+      "output": 30,
+      "cacheRead": 0.5,
+      "cacheWrite5m": 5,
+      "cacheWrite1h": 5,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cache write price on the page: cache writes are priced as input.",
+      "longContext": {
+        "aboveInputTokens": 272000,
+        "input": 10,
+        "output": 45,
+        "cacheRead": 1,
+        "cacheWrite5m": 10,
+        "cacheWrite1h": 10
+      },
+      "writesApproximate": true
+    },
+    "gpt-5.5-pro": {
+      "input": 30,
+      "output": 180,
+      "cacheRead": 30,
+      "cacheWrite5m": 30,
+      "cacheWrite1h": 30,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cached input or cache write price on the page: cached tokens are priced as input.",
+      "longContext": {
+        "aboveInputTokens": 272000,
+        "input": 60,
+        "output": 270,
+        "cacheRead": 60,
+        "cacheWrite5m": 60,
+        "cacheWrite1h": 60
+      },
+      "writesApproximate": true
+    },
+    "gpt-5.4": {
+      "input": 2.5,
+      "output": 15,
+      "cacheRead": 0.25,
+      "cacheWrite5m": 2.5,
+      "cacheWrite1h": 2.5,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cache write price on the page: cache writes are priced as input.",
+      "longContext": {
+        "aboveInputTokens": 272000,
+        "input": 5,
+        "output": 22.5,
+        "cacheRead": 0.5,
+        "cacheWrite5m": 5,
+        "cacheWrite1h": 5
+      },
+      "writesApproximate": true
+    },
+    "gpt-5.4-pro": {
+      "input": 30,
+      "output": 180,
+      "cacheRead": 30,
+      "cacheWrite5m": 30,
+      "cacheWrite1h": 30,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cached input or cache write price on the page: cached tokens are priced as input.",
+      "longContext": {
+        "aboveInputTokens": 272000,
+        "input": 60,
+        "output": 270,
+        "cacheRead": 60,
+        "cacheWrite5m": 60,
+        "cacheWrite1h": 60
+      },
+      "writesApproximate": true
+    },
+    "gpt-5.4-mini": {
+      "input": 0.75,
+      "output": 4.5,
+      "cacheRead": 0.075,
+      "cacheWrite5m": 0.75,
+      "cacheWrite1h": 0.75,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cache write price on the page: cache writes are priced as input.",
+      "writesApproximate": true
+    },
+    "gpt-5.4-nano": {
+      "input": 0.2,
+      "output": 1.25,
+      "cacheRead": 0.02,
+      "cacheWrite5m": 0.2,
+      "cacheWrite1h": 0.2,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cache write price on the page: cache writes are priced as input.",
+      "writesApproximate": true
+    },
+    "gpt-5.3-codex": {
+      "input": 1.75,
+      "output": 14,
+      "cacheRead": 0.175,
+      "cacheWrite5m": 1.75,
+      "cacheWrite1h": 1.75,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cache write price on the page: cache writes are priced as input.",
+      "writesApproximate": true
+    },
+    "gpt-5.2": {
+      "input": 1.75,
+      "output": 14,
+      "cacheRead": 0.175,
+      "cacheWrite5m": 1.75,
+      "cacheWrite1h": 1.75,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cache write price on the page: cache writes are priced as input.",
+      "writesApproximate": true
+    },
+    "gpt-5.2-pro": {
+      "input": 21,
+      "output": 168,
+      "cacheRead": 21,
+      "cacheWrite5m": 21,
+      "cacheWrite1h": 21,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cached input or cache write price on the page: cached tokens are priced as input.",
+      "writesApproximate": true
+    },
+    "gpt-5.1": {
+      "input": 1.25,
+      "output": 10,
+      "cacheRead": 0.125,
+      "cacheWrite5m": 1.25,
+      "cacheWrite1h": 1.25,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cache write price on the page: cache writes are priced as input.",
+      "writesApproximate": true
+    },
+    "gpt-5": {
+      "input": 1.25,
+      "output": 10,
+      "cacheRead": 0.125,
+      "cacheWrite5m": 1.25,
+      "cacheWrite1h": 1.25,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cache write price on the page: cache writes are priced as input.",
+      "writesApproximate": true
+    },
+    "gpt-5-mini": {
+      "input": 0.25,
+      "output": 2,
+      "cacheRead": 0.025,
+      "cacheWrite5m": 0.25,
+      "cacheWrite1h": 0.25,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cache write price on the page: cache writes are priced as input.",
+      "writesApproximate": true
+    },
+    "gpt-5-nano": {
+      "input": 0.05,
+      "output": 0.4,
+      "cacheRead": 0.005,
+      "cacheWrite5m": 0.05,
+      "cacheWrite1h": 0.05,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cache write price on the page: cache writes are priced as input.",
+      "writesApproximate": true
+    },
+    "gpt-5-pro": {
+      "input": 15,
+      "output": 120,
+      "cacheRead": 15,
+      "cacheWrite5m": 15,
+      "cacheWrite1h": 15,
+      "source": "https://developers.openai.com/api/docs/pricing",
+      "retrieved": "2026-11-02",
+      "note": "No cached input or cache write price on the page: cached tokens are priced as input.",
+      "writesApproximate": true
+    }
+  }
+}
