@@ -12,19 +12,19 @@ Most of what a coding agent costs is context that gets sent to the model again a
 
 ## Quick start
 
-You need Node.js 20.19 or later. Nothing is installed globally; `npx` runs the release tarball.
+You need Node.js 20.19 or later. `npx` runs the package from npm without installing it.
 
 ```sh
-RR=https://github.com/mateuszkania-im/read-receipts/releases/download/v0.1.0/read-receipts-0.1.0.tgz
-
-npx $RR                                    # summary of the last 30 days, all agents
-npx $RR --html report.html                 # self-contained HTML report
-npx $RR --html report.html --share         # the same, redacted for sharing
-npx $RR compare --by instructions          # sessions grouped by CLAUDE.md / AGENTS.md version
-npx $RR prs --gh                           # cost per branch and PR, PR states from the gh CLI
+npx read-receipts                                  # summary of the last 30 days, all agents
+npx read-receipts --html report.html               # self-contained HTML report
+npx read-receipts --html report.html --share       # the same, redacted for sharing
+npx read-receipts compare --by instructions        # sessions grouped by CLAUDE.md / AGENTS.md version
+npx read-receipts prs --gh                         # cost per branch and PR, PR states from the gh CLI
 ```
 
-Other commands: `sessions` (one row per session), `session <id-prefix>` (one session in detail) and `prices` (the price table in use). Common options: `--since 2w`, `--project <path>`, `--agent claude|codex`, `--json` (fields in [docs/json-schema.md](docs/json-schema.md)). `npx $RR --help` lists every option and command, one line each.
+To install it instead, run `npm i -g read-receipts` and call `read-receipts`. The release tarball also works: `npx https://github.com/mateuszkania-im/read-receipts/releases/download/v0.1.1/read-receipts-0.1.1.tgz`.
+
+Other commands: `sessions` (one row per session), `session <id-prefix>` (one session in detail) and `prices` (the price table in use). Common options: `--since 2w`, `--project <path>`, `--agent claude|codex`, `--json` (fields in [docs/json-schema.md](docs/json-schema.md)). `npx read-receipts --help` lists every option and command, one line each.
 
 <!-- STUDY:START -->
 ### What we measured

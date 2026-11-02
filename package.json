@@ -1,6 +1,6 @@
 {
   "name": "read-receipts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Read receipts for your coding agent: what it read, what it never referred to again, and what each session, branch and PR cost. Local CLI over Claude Code and Codex logs.",
   "keywords": [
     "claude-code",

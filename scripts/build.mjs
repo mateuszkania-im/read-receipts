@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Builds the standalone CLI: one ESM file, zero runtime dependencies,
- * committed at bin/read-receipts.mjs. It is what `npx <release .tgz>` runs.
+ * committed at bin/read-receipts.mjs. It is what `npx read-receipts` runs.
  *
  *   node scripts/build.mjs          build
  *   node scripts/build.mjs --check  fail if the committed file is stale (CI)

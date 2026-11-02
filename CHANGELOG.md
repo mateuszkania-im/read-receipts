@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 (2026-11-02)
+
+Published on npm; README uses `npx read-receipts`.
+
 ## 0.1.0 (2026-11-02)
 
 First release.
